@@ -4,7 +4,26 @@ import json
 from networkx.drawing.nx_agraph import graphviz_layout
 from networkx.readwrite.json_graph import node_link_data, node_link_graph
 
-class ExerciseNetwork():
+class ExerciseNetwork:    
+    """
+    Class to store and display the information on the relationship between exercises.
+    ==================================
+    Possible ways to initialise:
+        - *NetworkX DiGraph*: pass initial_graph = <nx.DiGraph> object
+        - *JSON file*: pass a dictionary loaded from a JSON file
+        - *Nothing*: to initialise a new graph
+        - *file_to_graph*: run this method with a filename to load a graph from a file
+    
+    
+    Useful Methods:
+    ==================================
+    
+    - add_branch / add_branches / add_branches_from_dict
+    - get_children_of / get_parents_of
+    - add_edge_from_name / add_edgess_from_dict
+    - draw_graph
+    - get_exercise_names
+    """
     def __init__(self, initial_graph = None, json_graph = None):
         is_graph = isinstance(initial_graph, nx.DiGraph)
         is_dict = isinstance(json_graph, dict)
@@ -45,7 +64,7 @@ class ExerciseNetwork():
         num_new_nodes = len(new_labels) - len(common_labels) # exclude new nodes from being added
         
         new_nodes = range(num, num+num_new_nodes)
-        old_nodes = self.get_nodes_of_labels(self.graph, list(common_labels)) # find the node # of the nodes already in the graph 
+        old_nodes = self.get_nodes_of_labels(list(common_labels)) # find the node # of the nodes already in the graph 
         
         labels = {node_num: {'name':label} for node_num, label in zip(list(new_nodes), unique_labels)}
         # add new nodes and give them attributes from new_labels
@@ -62,7 +81,7 @@ class ExerciseNetwork():
     
     def add_branches(self, new_labels, start_node_names):
         for label, start in zip(new_labels, start_node_names):        
-            self.add_branch(self.graph, label, start)
+            self.add_branch(label, start)
        
     
     def add_branches_from_dict(self, exercise_dict):
@@ -86,21 +105,21 @@ class ExerciseNetwork():
      
     
     def get_children_of(self, name):
-        start_node = self.get_nodes_of_labels(self.graph, name)[0]
+        start_node = self.get_nodes_of_labels(name)[0]
         child_nodes = list(self.graph.successors(start_node))
-        child_names = self.get_labels_of_nodes(self.graph, child_nodes)
+        child_names = self.get_labels_of_nodes(child_nodes)
         return child_nodes, child_names
     
     
     def get_parents_of(self, name):
-        start_node = self.get_nodes_of_labels(self.graph, name)[0]
+        start_node = self.get_nodes_of_labels(name)[0]
         parent_nodes = list(self.graph.predecessors(start_node))
-        parent_names = self.get_labels_of_nodes(self.graph, parent_nodes)
+        parent_names = self.get_labels_of_nodes(parent_nodes)
         return parent_nodes, parent_names
 
     
     def add_edge_from_name(self, start_label, end_label):
-        nodes = self.get_nodes_of_labels(self.graph, [start_label, end_label])
+        nodes = self.get_nodes_of_labels([start_label, end_label])
         edges = [(nodes[0], nodes[1])]
         self.graph.add_edges_from(edges)
     
@@ -111,7 +130,7 @@ class ExerciseNetwork():
         """
         for start_label in edges_dict.keys():
             for end_label in edges_dict[start_label]:
-                self.add_edge_from_name(self.graph, start_label, end_label)
+                self.add_edge_from_name(start_label, end_label)
 
     
     def draw_graph(self, size = (20,20)):
@@ -121,6 +140,17 @@ class ExerciseNetwork():
         nx.draw(self.graph, pos, node_size=0, alpha=0.4, edge_color="r", font_size=8, with_labels=True, labels = labels)
     
     
+    def get_exercise_names(self):
+        end_nodes = []
+        for node in self.graph.nodes():
+            successors_exist = len(list(self.graph.successors(node))) > 0
+            if successors_exist:
+                pass
+            else:
+                end_nodes.append(node)
+        return self.get_labels_of_nodes(end_nodes)
+
+        
     def graph_to_json(self):
         return node_link_data(self.graph)
     
