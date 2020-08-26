@@ -1,7 +1,11 @@
 README.md
 setup.py
+TrackerApp/CommandLineFunctions.py
 TrackerApp/ExerciseNetwork.py
-TrackerApp/TrackerDB.py
+TrackerApp/FromFile.py
+TrackerApp/InformationEditors.py
+TrackerApp/TrackerInterface.py
+TrackerApp/Utils.py
 TrackerApp/__init__.py
 TrackerApp.egg-info/PKG-INFO
 TrackerApp.egg-info/SOURCES.txt

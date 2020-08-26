@@ -1,8 +1,0 @@
-001
-Bench 1A 5 5
-Squat 1B 5 5
-Curls 2 6 6
-
-005 
-Jumps 1 10 10
-Squat 2A 5 F

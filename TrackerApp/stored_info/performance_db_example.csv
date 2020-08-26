@@ -1,5 +1,0 @@
-,Unnamed: 0,Unnamed: 0.1,Unnamed: 0.1.1,Date,WorkoutID,ExerciseID,ExerciseName,Performance,Volume
-0,0.0,0.0,0.0,today,1,1,test,"5@3,4@9",
-1,1.0,1.0,,today,4,"Series([], Name: ExerciseID, dtype: int64)",Bench,"5@30,10@90",1050.0
-2,2.0,,,no,no,"Series([], Name: ExerciseID, dtype: int64)",no,5@6,30.0
-3,,,,no,no,"Series([], Name: ExerciseID, dtype: int64)",no,5@6,30.0
