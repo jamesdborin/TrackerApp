@@ -176,6 +176,17 @@ class ExerciseNetwork:
         child_names = self.get_labels_of_nodes(child_nodes)
         return child_nodes, child_names
     
+
+    def is_leaf_node(self, label):
+        """
+        Given a label, we want to check if this node is a root node (has > 0 successors), or if it is a leaf node (has 0 successors)
+        """
+
+        nodes = self.get_nodes_of_labels([label])
+        successors_exist = len(list(self.graph.successors(nodes[0]))) > 0
+        return not successors_exist
+
+
     def get_descendants_of(self, name):
         """
         Given a node label, find all end nodes that descend from this node
@@ -184,8 +195,9 @@ class ExerciseNetwork:
 
         Output: [Descendant Node Numbers, Descendant Node Names]
         """
+
         end_nodes = []
-        start_node = self.get_nodes_of_labels(name)[0]
+        start_node = self.get_nodes_of_labels([name])[0]
         q = deque()
         q.append(start_node)
         
@@ -204,7 +216,15 @@ class ExerciseNetwork:
         
         return end_nodes
 
-        
+    
+    def is_parent(self, name):
+        """
+        Given a node label check is this node is a parent or not
+        """
+        node_num = self.get_nodes_of_labels(name)[0]
+        return len(list(self.graph.successors(node_num))) > 0
+
+
     def get_parents_of(self, name):
         """
         Given a node label find the parents of that node
@@ -258,6 +278,9 @@ class ExerciseNetwork:
     
     
     def get_exercise_names(self):
+        """
+        Return all of the nodes in the graph
+        """
         end_nodes = []
         for node in self.graph.nodes():
             successors_exist = len(list(self.graph.successors(node))) > 0
